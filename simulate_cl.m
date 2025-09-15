@@ -34,6 +34,7 @@ T = (0:N-1)'*Ts;
 % warn when N is not an exact PRBS period (2^k-1); this is expected.
 r = idinput(N, 'prbs');
 
+
 % disturbance with specified SNR at the plant output
 raw_v = randn(N,1);
 % simulate nominal output to estimate signal power
