@@ -29,20 +29,24 @@ function data = simulate_cl(G0, C0, Ts, N, SNR)
 T = (0:N-1)'*Ts;
 
 % reference: pseudo random binary sequence
-r = idinput(N, 'prbs', [], [-1 1]);  % 帯域指定を外す
+% Rely on the IDINPUT default settings (0 to 0.5 Nyquist band and
+% amplitude levels of [-1 1]) to produce a valid sequence. IDINPUT may
+% warn when N is not an exact PRBS period (2^k-1); this is expected.
+r = idinput(N, 'prbs');
 
 % disturbance with specified SNR at the plant output
 raw_v = randn(N,1);
 % simulate nominal output to estimate signal power
-Tyr_nom = feedback(G0*C0,1);
+I = tf(1,1,Ts);
+Tyr_nom = feedback(G0*C0,I);
 y_nom = lsim(Tyr_nom,r,T);
 P_signal = var(y_nom);
 P_noise = P_signal/10^(SNR/10);
 v = raw_v*sqrt(P_noise/var(raw_v));
 
 % closed-loop transfer functions
-Tyr = feedback(G0*C0,1);        % r -> y
-Tyv = feedback(1,G0*C0);        % v -> y
+Tyr = feedback(G0*C0,I);        % r -> y
+Tyv = feedback(I,G0*C0);        % v -> y
 Tur = feedback(C0,G0);          % r -> u
 Tuv = -C0*Tyv;                  % v -> u
 
