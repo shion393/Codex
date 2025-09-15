@@ -28,21 +28,25 @@ r = idinput(N, 'prbs');
 % discrete-time identity (avoid feedback(...,1) mixing times)
 I = tf(1,1,Ts);
 
+
 % disturbance with specified SNR at the plant output
 raw_v = randn(N,1);
 
 % simulate nominal output to estimate signal power
 Tyr_nom = feedback(G0*C0, I);
 y_nom = lsim(Tyr_nom, r, T);
+
 P_signal = var(y_nom);
 P_noise = P_signal/10^(SNR/10);
 v = raw_v * sqrt(P_noise / max(var(raw_v), eps));
+
 
 % closed-loop transfer functions (all discrete, same Ts)
 Tyr = feedback(G0*C0, I);   % r -> y
 Tyv = feedback(I, G0*C0);   % v -> y
 Tur = feedback(C0, G0);     % r -> u
 Tuv = -C0*Tyv;              % v -> u
+
 
 % simulate
 y = lsim(Tyr, r, T) + lsim(Tyv, v, T);
