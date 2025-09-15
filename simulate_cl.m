@@ -29,7 +29,7 @@ function data = simulate_cl(G0, C0, Ts, N, SNR)
 T = (0:N-1)'*Ts;
 
 % reference: pseudo random binary sequence
-r = idinput(N,'prbs',[0 1/Ts],[ -1 1 ]);
+r = idinput(N, 'prbs', [], [-1 1]);  % 帯域指定を外す
 
 % disturbance with specified SNR at the plant output
 raw_v = randn(N,1);
