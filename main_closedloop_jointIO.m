@@ -15,7 +15,8 @@ nb  = 2; nf = 2;  % Transfer function model orders
 
 % True plant and controller
 G0 = tf([0.5],[1 -1.5 0.7],Ts);
-C0 = pid(0.5,0.1,0,Ts);
+% Explicitly create a discrete-time PID controller with sample time Ts
+C0 = pid(0.5,0.1,0,0,Ts);
 
 %% Closed-loop simulation
 data = simulate_cl(G0, C0, Ts, N, SNR);

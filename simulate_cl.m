@@ -29,9 +29,9 @@ function data = simulate_cl(G0, C0, Ts, N, SNR)
 T = (0:N-1)'*Ts;
 
 % reference: pseudo random binary sequence
-
 % Rely on the IDINPUT default settings (0 to 0.5 Nyquist band and
-% amplitude levels of [-1 1]) to produce a valid sequence.
+% amplitude levels of [-1 1]) to produce a valid sequence. IDINPUT may
+% warn when N is not an exact PRBS period (2^k-1); this is expected.
 r = idinput(N, 'prbs');
 
 
