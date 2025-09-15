@@ -29,9 +29,11 @@ function data = simulate_cl(G0, C0, Ts, N, SNR)
 T = (0:N-1)'*Ts;
 
 % reference: pseudo random binary sequence
+
 % Rely on the IDINPUT default settings (0 to 0.5 Nyquist band and
 % amplitude levels of [-1 1]) to produce a valid sequence.
 r = idinput(N, 'prbs');
+
 
 % disturbance with specified SNR at the plant output
 raw_v = randn(N,1);
