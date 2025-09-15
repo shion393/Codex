@@ -29,7 +29,9 @@ function data = simulate_cl(G0, C0, Ts, N, SNR)
 T = (0:N-1)'*Ts;
 
 % reference: pseudo random binary sequence
-r = idinput(N, 'prbs', [], [-1 1]);  % Remove band specification
+% Generate PRBS within the default 0 to 0.5 Nyquist band to avoid
+% undefined signal generation at high frequencies.
+r = idinput(N, 'prbs', [0 0.5], [-1 1]);
 
 % disturbance with specified SNR at the plant output
 raw_v = randn(N,1);
