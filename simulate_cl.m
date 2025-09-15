@@ -36,15 +36,16 @@ r = idinput(N, 'prbs', [0 0.5], [-1 1]);
 % disturbance with specified SNR at the plant output
 raw_v = randn(N,1);
 % simulate nominal output to estimate signal power
-Tyr_nom = feedback(G0*C0,1);
+I = tf(1,1,Ts);
+Tyr_nom = feedback(G0*C0,I);
 y_nom = lsim(Tyr_nom,r,T);
 P_signal = var(y_nom);
 P_noise = P_signal/10^(SNR/10);
 v = raw_v*sqrt(P_noise/var(raw_v));
 
 % closed-loop transfer functions
-Tyr = feedback(G0*C0,1);        % r -> y
-Tyv = feedback(1,G0*C0);        % v -> y
+Tyr = feedback(G0*C0,I);        % r -> y
+Tyv = feedback(I,G0*C0);        % v -> y
 Tur = feedback(C0,G0);          % r -> u
 Tuv = -C0*Tyv;                  % v -> u
 
